@@ -6,6 +6,8 @@ from brainbox.api.serializers import MessageSerializer
 from brainbox.models import Message
 from django.http import JsonResponse
 
+from django.shortcuts import render, HttpResponse
+
 import os
 import openai
 from dotenv import load_dotenv
@@ -13,6 +15,8 @@ load_dotenv()
 
 openai.api_key = str(os.getenv("OPENAI_KEY"))
 
+def Index(request):
+    return HttpResponse("My Django Server Running ! - IKESAN")
 
 class MessageListAV(APIView):
     def get(self, request):

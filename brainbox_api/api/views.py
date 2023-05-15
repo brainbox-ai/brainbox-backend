@@ -47,6 +47,15 @@ class MessageListAV(APIView):
             "gpt_response": CustomChatGPT(messages, prompt)[-1]["content"],
         }
 
+        """
+        TEST PROMPT FOR POSTMAN
+        {
+            "input_prompt" : "Tell me about my car", 
+            "history" : [{"role": "user", "content": "My car is a BMW"}, {"role": "user", "content": "My car was built in 1989"}]
+        }
+        """
+
+
         serializer = MessageSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

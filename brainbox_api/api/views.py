@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from brainbox.api.serializers import MessageSerializer
-from brainbox.models import Message
+from api.serializers import MessageSerializer
+from api.models import Message
 from django.http import JsonResponse
 
 from django.shortcuts import render, HttpResponse
@@ -14,6 +14,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 openai.api_key = str(os.getenv("OPENAI_KEY"))
+
+# Create your views here.
 
 def Index(request):
     return HttpResponse("My Django Server Running ! - IKESAN")

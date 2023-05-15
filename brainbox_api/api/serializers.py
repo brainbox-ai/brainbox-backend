@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from brainbox.models import Message
+from api.models import Message
 
 class MessageSerializer(serializers.ModelSerializer):
     

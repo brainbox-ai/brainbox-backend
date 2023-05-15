@@ -21,27 +21,30 @@ def Index(request):
     return HttpResponse("My Django Server Running ! - IKESAN")
 
 class MessageListAV(APIView):
-    def get(self, request):
-        messages = Message.objects.all()
-        serializer = MessageSerializer(messages, many=True)
-        return Response(serializer.data)
+
+
 
     def post(self, request):
-        prompt = request.data['input_prompt']
-        
-        completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{
-                "role": "user",
-                "content": prompt
-            }]
-        )
+        prompt = request.data.get('input_prompt', '')
+        messages = request.data.get('history', [])
 
-        gpt_response = completion.choices[0].message.content
-        
+        def CustomChatGPT(messages, user_input):
+            print("line 32", messages)
+            messages.append({"role": "user", "content": user_input})
+            print("line 34", messages)
+            response = openai.ChatCompletion.create(
+                model = "gpt-3.5-turbo",
+                messages = messages
+            )
+            print("line 39", response)
+            ChatGPT_reply = response["choices"][0]["message"]["content"]
+            messages.append({"role": "assistant", "content": ChatGPT_reply})
+            print("line 42", messages)
+            return messages
+
         data = {
             "input_prompt": prompt,
-            "gpt_response": gpt_response,
+            "gpt_response": CustomChatGPT(messages, prompt)[-1]["content"],
         }
 
         serializer = MessageSerializer(data=data)

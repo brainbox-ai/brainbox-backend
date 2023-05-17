@@ -34,7 +34,35 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Migrations and Start Server
+4. Database Configuration
+
+Create db in terminal (install postgresql globally if not already). In a new terminal, enter the postgres cli
+```
+psql postgres
+CREATE DATABASE brainboxdb; 
+```
+Confirm db is successfully created
+```
+\l
+\c brainboxdb
+```
+=> You are now connected to database "brainboxdb" as user "<username>"
+
+In settings.py update DATABASE configuration with database name and username
+```
+ DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "brainboxdb", 
+        "USER": "<username>",
+        "PASSWORD": "password",
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
+}
+```
+
+6. Migrations and Start Server
  
 Navigate into brainbox_api, run migrations and start server
 

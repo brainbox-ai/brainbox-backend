@@ -24,7 +24,7 @@ OPENAI_KEY = "..."
 From root directory, run the following commands. This will create a "env" folder. If you choose to name the folder to something else, ensure .gitignore is updated accordingly
 
 ```
-python -m env
+python -m venv env
 source env/bin/activate
 ```
 

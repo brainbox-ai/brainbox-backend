@@ -15,28 +15,23 @@ load_dotenv()
 
 openai.api_key = str(os.getenv("OPENAI_KEY"))
 
-# Create your views here.
-
 def Index(request):
     return HttpResponse("My Django Server Running ! - IKESAN")
 
 class MessageListAV(APIView):
-
-
-
     def post(self, request):
         prompt = request.data.get('input_prompt', '')
         messages = request.data.get('history', [])
 
         def CustomChatGPT(messages, user_input):
-            print("line 32", messages)
+            # print("line 32", messages)
             messages.append({"role": "user", "content": user_input})
-            print("line 34", messages)
+            # print("line 34", messages)
             response = openai.ChatCompletion.create(
                 model = "gpt-3.5-turbo",
                 messages = messages
             )
-            print("line 39", response)
+            # print("line 39", response)
             ChatGPT_reply = response["choices"][0]["message"]["content"]
             messages.append({"role": "assistant", "content": ChatGPT_reply})
             print("line 42", messages)

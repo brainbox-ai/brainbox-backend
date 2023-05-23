@@ -86,8 +86,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "brainboxdb",
-        "USER": "chrisli",
-        "PASSWORD": "password",
+        "USER": str(os.getenv("DB_USER")),
+        "PASSWORD": str(os.getenv("DB_PASSWORD")),
         "HOST": "localhost",
         "PORT": "5432",
     }

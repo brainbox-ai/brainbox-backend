@@ -82,16 +82,46 @@ class RandomMessageListAV(APIView):
 
         print("line83", random_character ,"/n")
         
-        prompt = request.data.get('input_prompt', '')
+        prompt = random_character
         messages = request.data.get('history', [])
 
         print("line88", prompt ,"/n")
         print("line89", messages ,"/n")
 
-        redirect_path = reverse("messagelist")
-        print("line92", redirect_path ,"/n")
 
-        return Response({"input_prompt": prompt, "gpt_response": random_character})
+        def CustomChatGPT(messages, user_input):
+            print("line 93", messages)
+            messages.append({"role": "user", "content": user_input})
+            print("line 95", messages)
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+            print("line 100", response)
+            ChatGPT_reply = response["choices"][0]["message"]["content"]
+            messages.append({"role": "assistant", "content": ChatGPT_reply})
+            print("line 103", messages)
+            return messages
+
+        data = {
+            "input_prompt": prompt,
+            "gpt_response": CustomChatGPT(messages, prompt)[-1]["content"],
+        }
+
+        """
+        TEST PROMPT FOR POSTMAN
+        {
+            "input_prompt" : "Tell me about my car", 
+            "history" : [{"role": "user", "content": "My car is a BMW"}, {"role": "user", "content": "My car was built in 1989"}]
+        }
+        """
+
+        serializer = MessageSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
     
     """
         redirect_path = reverse("messagelist", args=[random_character])

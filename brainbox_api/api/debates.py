@@ -16,7 +16,7 @@ class DebateListAV(APIView):
         
     def post(self, request):
         profile = request.data.get('profile', '')
-        topic = request.data.get('conversation_topic', '')
+        topic = request.data.get('topic', '')
         history = request.data.get('history', [])
         
         all_profiles = Profile.objects.all()
@@ -24,7 +24,7 @@ class DebateListAV(APIView):
         print("Line 26:", debator[0].style)
         
         if len(history) == 0:
-            prompt = f"In the style of {debator[0].name} with a tone that is {debator[0].style}, provide your views on{topic}"
+            prompt = f"In the style of {debator[0].name} with a tone that is {debator[0].style}, provide your views on {topic}"
         else:
             prompt = f"In the style of {debator[0].name} with a tone that is {debator[0].style}, respond to the previous message sent. Provide arguments against the previous message to try and persuade the viewer"
             

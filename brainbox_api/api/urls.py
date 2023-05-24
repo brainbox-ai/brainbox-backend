@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import MessageListAV
+from . import views
 
 urlpatterns = [
-    path('prompts/', MessageListAV.as_view(), name="messagelist"),
+    path('prompts/', views.MessageListAV.as_view(), name="messagelist"),
+    path('RandomCharacterResponse/', views.RandomMessageListAV.as_view(), name="RandomCharacterResponse"),
 ]

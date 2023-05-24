@@ -1,9 +1,10 @@
-from rest_framework import status
+# from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from api.serializers import MessageSerializer
-from api.models import Message
+
+from api.serializers import MessageSerializer, ProfileSerializer
+from api.models import Profile
 from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, HttpResponse
@@ -26,7 +27,6 @@ def Index(request):
 
 
 class MessageListAV(APIView):
-
     def post(self, request):
         prompt = request.data.get('input_prompt', '')
         messages = request.data.get('history', [])
@@ -122,10 +122,27 @@ class RandomMessageListAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
-    
-    """
+          
+        """
         redirect_path = reverse("messagelist", args=[random_character])
         print("line93", redirect_path ,"/n")
         # return HttpResponseRedirect(redirect_path)
         return Response({"input_prompt": prompt, "gpt_response": random_character})
-    """
+        """
+
+
+
+class ProfileListAV(APIView):
+    def get(self, request):
+        profiles = Profile.objects.all()
+        serializer = ProfileSerializer(profiles, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+    

@@ -25,7 +25,7 @@ class Profile(models.Model):
 class Debate(models.Model):
     conversation_topic = models.CharField(max_length=250)
     debator = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    message = models.CharField(max_length=2000)
+    message = models.CharField(max_length=20000)
     created = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

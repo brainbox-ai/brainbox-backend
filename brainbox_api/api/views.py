@@ -1,10 +1,9 @@
-from rest_framework import status
+# from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from api.serializers import MessageSerializer
-from api.models import Message
-from django.http import JsonResponse
+from api.serializers import MessageSerializer, ProfileSerializer
+from api.models import Profile
 
 from django.shortcuts import render, HttpResponse
 
@@ -21,9 +20,6 @@ def Index(request):
     return HttpResponse("My Django Server Running ! - IKESAN")
 
 class MessageListAV(APIView):
-
-
-
     def post(self, request):
         prompt = request.data.get('input_prompt', '')
         messages = request.data.get('history', [])
@@ -62,3 +58,20 @@ class MessageListAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+
+class ProfileListAV(APIView):
+    def get(self, request):
+        profiles = Profile.objects.all()
+        serializer = ProfileSerializer(profiles, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+    
+    
